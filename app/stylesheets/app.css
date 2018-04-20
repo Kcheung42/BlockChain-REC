@@ -1,8 +1,12 @@
-body {
-  margin-left: 25%;
-  margin-right: 25%;
-  margin-top: 10%;
-  font-family: "Open Sans", sans-serif;
+div.container {
+  width: 100%;
+  font-family: "Helvetica", sans-serif;
+}
+
+header, footer {
+  padding: 1em;
+  color: white;
+  background-color: #3D85C6;
 }
 
 label {
@@ -37,6 +41,13 @@ h3 {
   font-weight: normal;
   color: #AAA;
   font-size: 24px;
+}
+
+.header {
+  color: white;
+
+  clear: left;
+  text-alight: center;
 }
 
 .black {
