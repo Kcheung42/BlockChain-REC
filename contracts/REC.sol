@@ -29,7 +29,9 @@ contract REC is ERC721 {
 	struct Token {
 		address mintedBy;
 		uint64 mintedAt;
+		string[] claiment;
 		string name;
+		string etype;
 	}
 
 
@@ -77,11 +79,13 @@ contract REC is ERC721 {
 		Transfer(_from, _to, _tokenId);
 	}
 
-	function _mint(address _owner) internal returns (uint256 tokenId) {
+	function _mint(address _owner, string _name, string _type) internal returns (uint256 tokenId) {
 		Token memory token = Token({
 			mintedBy: _owner,
 			mintedAt: uint64(now),
-			name: "Bambo"
+			claiment: new string[](0),
+			name: _name,
+			etype: _type
 		});
 		tokenId = tokens.push(token) - 1;
 
@@ -136,7 +140,7 @@ contract REC is ERC721 {
 		_transfer(_from, _to, _tokenId);
 	}
 
-	function tokensOfOwner(address _owner) external view returns (uint256[]) {
+	function tokensOfOwner(address _owner) public view returns (uint256[]) {
 		uint256 balance = balanceOf(_owner);
 
 		if (balance == 0) {
@@ -161,14 +165,16 @@ contract REC is ERC721 {
 
 	/*** OTHER EXTERNAL FUNCTIONS ***/
 
-	function mint() external returns (uint256) {
-		return _mint(msg.sender);
+	function mint(string name, string etype) public returns (uint256) {
+		return _mint(msg.sender, name, etype);
 	}
 
-	function getToken(uint256 _tokenId) external view returns (address mintedBy, uint64 mintedAt) {
+	function getToken(uint256 _tokenId) public view returns (address mintedBy, uint64 mintedAt, string name, string etype) {
 		Token memory token = tokens[_tokenId];
 
 		mintedBy = token.mintedBy;
 		mintedAt = token.mintedAt;
+		name = token.name;
+		etype = token.etype;
 	}
 }

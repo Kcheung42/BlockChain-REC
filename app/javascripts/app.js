@@ -112,7 +112,7 @@ window.App = {
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.mint(account, {from: account});
+			return meta.mint("42 SiliconValley", "solar", {from: account});
 		}).then(function() {
 			self.refreshBalance();
 			self.setStatus("Coin Minted!");
@@ -128,11 +128,20 @@ window.App = {
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.ownerOf(tokenID);
+			// return meta.ownerOf(tokenID);
+			return meta.getToken(tokenID);
 		}).then(function(value) {
-			var token_info = document.getElementById("tokenInfo");
+			console.log(value);
 			var text = "";
-			text = "<br>Owner Address: " + value;
+			text = "<br>Minted by Address: ";
+			for (var x in value){
+				if (x == 1){
+					text += "<br>" + String(new Date(value[x]));
+				} else {
+					text += "<br>" + value[x];
+				}
+			}
+			var token_info = document.getElementById("tokenInfo");
 			token_info.innerHTML = text;
 		}).catch(function(e) {
 			console.log(e);

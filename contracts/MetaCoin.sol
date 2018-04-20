@@ -9,36 +9,26 @@ import "./REC.sol";
 // token, see: https://github.com/ConsenSys/Tokens. Cheers!
 
 contract MetaCoin is REC{
-	mapping (address => uint) balances;
 
 	event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
 	function MetaCoin() public {
-		balances[tx.origin] = 10000;
-		for(int i=0;i < 42;i++){
-			_mint(msg.sender);
+		for(int i=0;i < 10;i++){
+			mint("EDF", "solar");
 		}
 	}
 
 	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
 		uint256 balance = balanceOf(msg.sender);
-		uint256[] memory result = new uint256[](balance);
-		// result = this.tokensOfOwner(msg.sender);
-
-		uint tokenid = result[0];
+		uint256[] memory tokenlist = tokensOfOwner(msg.sender);
 
 		if (amount <= balance){
 			for(uint i=0; i < amount; i++){
-				_transfer(msg.sender, receiver, 1);
+				_transfer(msg.sender, receiver, tokenlist[i]);
 			}
 			return true;
 		}
 		return false;
-		// if (balances[msg.sender] < amount) return false;
-		// balances[msg.sender] -= amount;
-		// balances[receiver] += amount;
-		// Transfer(msg.sender, receiver, amount);
-		// return true;
 	}
 
 	function getBalance(address addr) public view returns(uint) {
