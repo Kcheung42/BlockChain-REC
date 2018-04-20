@@ -50,3 +50,26 @@ h3 {
 .hint {
   color: #666;
 }
+
+.tabcontent {
+  display: none;
+  border-top: none;
+}
+
+.tab {
+  overflow: hidden;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14 px 16 px;
+  transition: 0.3s;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}

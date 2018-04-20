@@ -85,6 +85,27 @@ window.App = {
 			self.setStatus("Error sending coin; see log.");
 		});
 	},
+	retireCoin: function() {
+		var self = this;
+
+		var token = parseInt(document.getElementById("token").value);
+		var receiver = 0x5aeda56215b167893e80b4fe645ba6d5bab767de;
+
+		this.setStatus("Initiating retirement... (please wait)");
+
+		var meta;
+		MetaCoin.deployed().then(function(instance) {
+			meta = instance;
+			return meta.sendCoin(receiver, token, {from: account});
+			// return meta.transfer.call(receiver, amount);
+		}).then(function() {
+			self.setStatus("REC Retired");
+			self.refreshBalance();
+		}).catch(function(e) {
+			console.log(e);
+			self.setStatus("Error sending coin; see log.");
+		});
+	},
 
 	mintCoin: function() {
 		var self = this;
@@ -92,7 +113,31 @@ window.App = {
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
 			return meta.mint(account, {from: account});
-		}).then(self.refreshBalance());
+		}).then(function() {
+			self.refreshBalance();
+			self.setStatus("Coin Minted!");
+		}).catch(function(e) {
+			console.log(e);
+			slef.setStatus("Error minting coin; see log.");
+		});
+	},
+
+	oneREC: function(){
+		var self = this;
+  		var tokenID = parseInt(document.getElementById("token").value);
+		var meta;
+		MetaCoin.deployed().then(function(instance) {
+			meta = instance;
+			return meta.ownerOf(tokenID);
+		}).then(function(value) {
+			var token_info = document.getElementById("tokenInfo");
+			var text = "";
+			text = "<br>Owner Address: " + value;
+			token_info.innerHTML = text;
+		}).catch(function(e) {
+			console.log(e);
+			self.setStatus("Error looking up token list")
+		});
 	},
 
 	listREC: function(){
@@ -102,9 +147,13 @@ window.App = {
 			meta = instance;
 			return meta.tokensOfOwner(account);
 		}).then(function(value) {
-			console.log(value);
 			var reclist_element = document.getElementById("reclist");
-			 // reclist.innerHTML = value.valueOF();
+			var x
+			var text = "";
+			for (x in value) {
+				text += "<br> Token ID: " + value[x];
+			}
+			reclist_element.innerHTML = text;
 		}).catch(function(e) {
 			console.log(e);
 			self.setStatus("Error getting REC list")
@@ -123,6 +172,7 @@ window.addEventListener('load', function() {
 		// fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
 		window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
 	}
+
 
 	App.start();
 });
