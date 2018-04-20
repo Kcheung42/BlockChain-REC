@@ -56,7 +56,6 @@ window.App = {
 			meta = instance;
 			return meta.getBalance.call(account, {from: account});
 		}).then(function(value) {
-			console.log(value)
 			var balance_element = document.getElementById("balance");
 			balance_element.innerHTML = value.valueOf();
 		}).catch(function(e) {
@@ -77,6 +76,7 @@ window.App = {
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
 			return meta.sendCoin(receiver, amount, {from: account});
+			// return meta.transfer.call(receiver, amount);
 		}).then(function() {
 			self.setStatus("Transaction complete!");
 			self.refreshBalance();
@@ -91,7 +91,7 @@ window.App = {
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.mint.call(account, {from: account});
+			return meta.mint(account, {from: account});
 		}).then(self.refreshBalance());
 	},
 
@@ -100,7 +100,7 @@ window.App = {
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.tokensOfOwner.call(account, {from: account});
+			return meta.tokensOfOwner(account);
 		}).then(function(value) {
 			console.log(value);
 			var reclist_element = document.getElementById("reclist");
