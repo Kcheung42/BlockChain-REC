@@ -29,7 +29,6 @@ contract REC is ERC721 {
 	struct Token {
 		address mintedBy;
 		uint64 mintedAt;
-		string name;
 	}
 
 
@@ -80,8 +79,7 @@ contract REC is ERC721 {
 	function _mint(address _owner) internal returns (uint256 tokenId) {
 		Token memory token = Token({
 			mintedBy: _owner,
-			mintedAt: uint64(now),
-			name: "Bambo"
+			mintedAt: uint64(now)
 		});
 		tokenId = tokens.push(token) - 1;
 
@@ -161,9 +159,9 @@ contract REC is ERC721 {
 
 	/*** OTHER EXTERNAL FUNCTIONS ***/
 
-	function mint() external returns (uint256) {
-		return _mint(msg.sender);
-	}
+	// function mint() external returns (uint256) {
+	// 	return _mint(msg.sender);
+	// }
 
 	function getToken(uint256 _tokenId) external view returns (address mintedBy, uint64 mintedAt) {
 		Token memory token = tokens[_tokenId];
