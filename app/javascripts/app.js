@@ -110,9 +110,11 @@ window.App = {
 	mintCoin: function() {
 		var self = this;
 		var meta;
+		var company = document.getElementById("Company").value;
+		var etype = document.getElementById("Energy").value;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.mint("42 SiliconValley", "solar", {from: account});
+			return meta.mint(company, etype, {from: account});
 		}).then(function() {
 			self.refreshBalance();
 			self.setStatus("Coin Minted!");
