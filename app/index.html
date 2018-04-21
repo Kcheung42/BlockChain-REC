@@ -8,13 +8,22 @@
 </head>
 <body>
 <div class="container">
+  <h4> Code Green EDF Hackathon </h4>
+  <hr>
   <header>
-    <h1>Green Energy Token</h1>
-    <h2>Save the world with GET - REC on the Blockchain</h2>
+    <div class="flex">
+     <h1>Green Energy Token</h1>
+     <h2>Save the world with GET - REC on the Blockchain</h2>
+    </div>
+    <div class="flex">
+      <img class="headerimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Wind_Turbine.svg/2000px-Wind_Turbine.svg.png" alt="windturbine">
+    </div>
   </header>
-  <h3>You have <span class="black"><span id="balance"> </span> REC / GET</span>
-  <button onclick="App.refreshBalance()">^</button> </h3>
-
+  <div class="app">
+    <h3>You have <span class="black"><span id="balance"> </span> REC / GET</span>
+    <br><br>
+      <button onclick="App.refreshBalance()">refresh</button> </h3>
+    <hr>
   <div class="tab">
     <button class="tablinks" onclick="openAction(event, 'Mint')">Mint</button>
     <button class="tablinks" onclick="openAction(event, 'Send')">Send</button>
@@ -23,19 +32,19 @@
   </div>
 
   <div id="Mint" class="tabcontent">
-    <h1>Mint a New Green Energy Token</h1>
+    <h5>Mint a New Green Energy Token</h5>
     <br><label for="Company">Company Name:</label><input type="text" id="Company" placeholder="e.g., EDF"></input>
     <br><label for="Energy">Energy:</label><input type="text" id="Energy" placeholder="e.g., Solar"></input>
     <br><button id="send" onclick="App.mintCoin()">Mint REC </button>
   </div>
   <div id="Send" class="tabcontent">
-    <h1>Transfer a REC</h1>
+    <h5>Transfer a REC</h5>
     <br><label for="amount">Amount:</label><input type="text" id="amount" placeholder="e.g., 95"></input>
     <br><label for="receiver">To Address:</label><input type="text" id="receiver" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
     <br><br><button id="send" onclick="App.sendCoin()">Send REC</button>
   </div>
   <div id="list" class="tabcontent">
-    <h1>Your Green Energy Tokens</h1>
+    <h5>Your Green Energy Tokens</h5>
     <br>
     <br><label for="token">Token Id #:</label><input type="text" id="token" placeholder="e.g., 12"></input>
     <br><br><button id="send" onclick="App.oneREC()">Token Lookup</button>
@@ -44,11 +53,11 @@
     <span id="reclist"></span>
   </div>
   <div id="retire" class="tabcontent">
-    <h1>Retire Your REC</h1>
+    <h5>Retire Your REC</h5>
     <br><label for="token">Token Id #:</label><input type="text" id="token" placeholder="e.g., 12"></input>
     <br><br><button id="send" onclick="App.retireCoin()">Retire REC</button> 
   </div>
-
+</div>
   <script>
   function openAction(evt, actionItem) {
 	  var i, tabcontent, tablinks;
