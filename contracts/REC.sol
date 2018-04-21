@@ -29,7 +29,7 @@ contract REC is ERC721 {
 	struct Token {
 		address mintedBy;
 		uint64 mintedAt;
-		string[] claiment;
+		address claiment;
 		string name;
 		string etype;
 	}
@@ -40,8 +40,10 @@ contract REC is ERC721 {
 	Token[] tokens;
 
 	mapping (uint256 => address) public tokenIndexToOwner;
+	mapping (uint256 => address) public tokenIndexToClaiment;
 	mapping (address => uint256) ownershipTokenCount;
 	mapping (uint256 => address) public tokenIndexToApproved;
+	address public graveyard = 0xDB371E3C294165d52A0729A2946a29Dc22EDDAb7;
 
 
 	/*** EVENTS ***/
@@ -66,24 +68,36 @@ contract REC is ERC721 {
 		Approval(tokenIndexToOwner[_tokenId], tokenIndexToApproved[_tokenId], _tokenId);
 	}
 
-	function _transfer(address _from, address _to, uint256 _tokenId) internal {
-		ownershipTokenCount[_to]++;
-		testValue(ownershipTokenCount[_to]);
-		tokenIndexToOwner[_tokenId] = _to;
+	function retireCoin(uint256 _tokenId) public{
+		Token memory token = tokens[_tokenId];
+		tokens[_tokenId].claiment = msg.sender;
+		tokenIndexToClaiment[_tokenId] = msg.sender;
+		_transfer(msg.sender, graveyard, _tokenId);
 
-		if (_from != address(0)) {
-			ownershipTokenCount[_from]--;
-			delete tokenIndexToApproved[_tokenId];
+	}
+
+	function _transfer(address _from, address _to, uint256 _tokenId) internal returns (bool){
+		if (_from != graveyard){
+			ownershipTokenCount[_to]++;
+			testValue(ownershipTokenCount[_to]);
+			tokenIndexToOwner[_tokenId] = _to;
+
+			if (_from != address(0)) {
+				ownershipTokenCount[_from]--;
+				delete tokenIndexToApproved[_tokenId];
+			}
+
+			Transfer(_from, _to, _tokenId);
+			return true;
 		}
-
-		Transfer(_from, _to, _tokenId);
+		return false;
 	}
 
 	function _mint(address _owner, string _name, string _type) internal returns (uint256 tokenId) {
 		Token memory token = Token({
 			mintedBy: _owner,
 			mintedAt: uint64(now),
-			claiment: new string[](0),
+			claiment: address(0),
 			name: _name,
 			etype: _type
 		});
@@ -121,7 +135,7 @@ contract REC is ERC721 {
 		require(_owns(msg.sender, _tokenId));
 
 		_approve(_to, _tokenId);
-}
+	}
 
 	function transfer(address _to, uint256 _tokenId) external {
 		require(_to != address(0));
@@ -162,19 +176,40 @@ contract REC is ERC721 {
 		return result;
 	}
 
+	function retireTokensOfOwner(address _owner) public view returns (uint256[]) {
+		uint256 balance = balanceOf(graveyard);
 
-	/*** OTHER EXTERNAL FUNCTIONS ***/
+		if (balance == 0) {
+			return new uint256[](0);
+		} else {
+			uint256[] memory result;
+			uint256 maxTokenId = totalSupply();
+			uint256 idx = 0;
 
-	function mint(string name, string etype) public returns (uint256) {
-		return _mint(msg.sender, name, etype);
+			uint256 tokenId;
+			for (tokenId = 1; tokenId <= maxTokenId; tokenId++) {
+				if (tokenIndexToClaiment[tokenId] == _owner) {
+					result[idx] = tokenId;
+					idx++;
+				}
+			}
+		}
+
+		return result;
 	}
 
-	function getToken(uint256 _tokenId) public view returns (address mintedBy, uint64 mintedAt, string name, string etype) {
-		Token memory token = tokens[_tokenId];
+		/*** OTHER EXTERNAL FUNCTIONS ***/
 
-		mintedBy = token.mintedBy;
-		mintedAt = token.mintedAt;
-		name = token.name;
-		etype = token.etype;
+		function mint(string name, string etype) public returns (uint256) {
+			return _mint(msg.sender, name, etype);
+		}
+
+		function getToken(uint256 _tokenId) public view returns (address mintedBy, uint64 mintedAt, string name, string etype) {
+			Token memory token = tokens[_tokenId];
+
+			mintedBy = token.mintedBy;
+			mintedAt = token.mintedAt;
+			name = token.name;
+			etype = token.etype;
+		}
 	}
-}
