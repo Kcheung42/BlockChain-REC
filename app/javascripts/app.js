@@ -146,6 +146,8 @@ window.App = {
 			var token_info = document.getElementById("tokenInfo");
 			token_info.innerHTML = text;
 		}).catch(function(e) {
+			var token_info = document.getElementById("tokenInfo");
+			token_info.innerHTML = "";	
 			console.log(e);
 			self.setStatus("Error looking up token list")
 		});
@@ -176,15 +178,15 @@ window.App = {
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.retireTokensOfOwner(account);
+			return meta.tokensOfOwner("0x821aea9a577a9b44299b9c15c88cf3087f3b5544");
 		}).then(function(value) {
-			var reclist_element = document.getElementById("retiredlist");
+			var retired_element = document.getElementById("retiredlist");
 			var x
 			var text = "";
 			for (x in value) {
 				text += "<br> Token ID: " + value[x];
 			}
-			reclist_element.innerHTML = text;
+			retired_element.innerHTML = text;
 		}).catch(function(e) {
 			console.log(e);
 			self.setStatus("Error getting REC list")

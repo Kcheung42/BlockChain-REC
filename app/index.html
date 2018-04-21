@@ -35,7 +35,7 @@
     <h5>Mint a New Green Energy Token</h5>
     <br><label for="Company">Company Name:</label><input type="text" id="Company" placeholder="e.g., EDF"></input>
     <br><label for="Energy">Energy:</label><input type="text" id="Energy" placeholder="e.g., Solar"></input>
-    <br><button id="send" onclick="App.mintCoin()">Mint REC </button>
+    <br><br><button id="send" onclick="App.mintCoin()">Mint REC </button>
   </div>
   <div id="Send" class="tabcontent">
     <h5>Transfer a REC</h5>
@@ -48,17 +48,20 @@
     <br>
     <br><label for="token">Token Id #:</label><input type="text" id="token" placeholder="e.g., 12"></input>
     <br><br><button id="send" onclick="App.oneREC()">Token Lookup</button>
-    <span id="tokenInfo"></span>
+    <br><span id="tokenInfo"></span>
     <br><br><button id="send" onclick="App.listREC()">List All Your GET</button>
-    <span id="reclist"></span>
+   <br> <span id="reclist"></span>
   </div>
   <div id="retire" class="tabcontent">
     <h5>Retire Your REC</h5>
     <br><label for="token">Token Id #:</label><input type="text" id="token" placeholder="e.g., 12"></input>
     <br><br><button id="send" onclick="App.retireCoin()">Retire REC</button> 
-    <br><br><button id="send" onclick="App.listRetire()">List All Your GET</button>
-    <span id="retiredlist"></span>
+    <br><br><button id="send" onclick="App.listRetire()">List All Retired RECs</button>
+    <br><span id="retiredlist"></span>
   </div>
+  <br>
+  <span id="status"></span>
+  <br>
 </div>
   <script>
   function openAction(evt, actionItem) {
@@ -76,9 +79,6 @@
   }
   </script>
 
-  <br>
-  <span id="status"></span>
-  <br>
 </div>
 </body>
 </html>

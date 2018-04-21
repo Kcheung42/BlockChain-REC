@@ -43,8 +43,7 @@ contract REC is ERC721 {
 	mapping (uint256 => address) public tokenIndexToClaiment;
 	mapping (address => uint256) ownershipTokenCount;
 	mapping (uint256 => address) public tokenIndexToApproved;
-	address public graveyard = 0xDB371E3C294165d52A0729A2946a29Dc22EDDAb7;
-
+	address public graveyard = 0x821aEa9a577a9b44299B9c15c88cf3087F3b5544;
 
 	/*** EVENTS ***/
 
