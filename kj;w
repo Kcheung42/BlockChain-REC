@@ -85,19 +85,19 @@ window.App = {
 			self.setStatus("Error sending coin; see log.");
 		});
 	},
-
 	retireCoin: function() {
 		var self = this;
 
 		var token = parseInt(document.getElementById("token").value);
-		var receiver = 0xDB371E3C294165d52A0729A2946a29Dc22EDDAb7;
+		var receiver = 0x5aeda56215b167893e80b4fe645ba6d5bab767de;
 
 		this.setStatus("Initiating retirement... (please wait)");
 
 		var meta;
 		MetaCoin.deployed().then(function(instance) {
 			meta = instance;
-			return meta.retireCoin(token, {from: account});
+			return meta.testchange(token, {from: account});
+			// return meta.transfer.call(receiver, amount);
 		}).then(function() {
 			self.setStatus("REC Retired");
 			self.refreshBalance();
@@ -159,26 +159,6 @@ window.App = {
 			return meta.tokensOfOwner(account);
 		}).then(function(value) {
 			var reclist_element = document.getElementById("reclist");
-			var x
-			var text = "";
-			for (x in value) {
-				text += "<br> Token ID: " + value[x];
-			}
-			reclist_element.innerHTML = text;
-		}).catch(function(e) {
-			console.log(e);
-			self.setStatus("Error getting REC list")
-		});
-	},
-
-	listRetire: function(){
-		var self = this;
-		var meta;
-		MetaCoin.deployed().then(function(instance) {
-			meta = instance;
-			return meta.retireTokensOfOwner(account);
-		}).then(function(value) {
-			var reclist_element = document.getElementById("retiredlist");
 			var x
 			var text = "";
 			for (x in value) {
